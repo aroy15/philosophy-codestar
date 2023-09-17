@@ -45,7 +45,18 @@ function philosophy_register_required_plugins() {
 			'slug'		=> 'cmb2-attached-posts',
 			'required'	=> true,
 			'source'	=> 'https://github.com/CMB2/cmb2-attached-posts/archive/refs/heads/master.zip'
-		)
+		),
+		array(
+			'name'      => 'Shortcake (Shortcode UI',
+			'slug'      => 'shortcode-ui',
+			'required'	=> false
+		),
+		array(
+			'name'		=> 'CodeStar',
+			'slug'		=> 'codestar-framework',
+			'required'	=> true,
+			'source'	=> 'https://github.com/Codestar/codestar-framework/archive/refs/heads/master.zip'
+		),
 
 	);
 	
