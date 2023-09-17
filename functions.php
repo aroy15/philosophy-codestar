@@ -255,9 +255,16 @@ function philosophy_cpt_slug_fix($post_link, $id) {
                 $post_link = str_replace("%book%", $parent_post->post_name, $post_link);
             }
         }
-    } else {
-        return $post_link; // Return unmodified permalink for other cases
+    }else if(is_object($p) && 'book' == get_post_type($id)) {
+        $genre = wp_get_post_terms($p->ID, 'genre');
+        if (is_array($genre) && count($genre)>0) {
+            $slug = $genre[0]->slug;
+            $post_link = str_replace("%genre%", $slug, $post_link);
+        }else{
+            $post_link = str_replace("%genre%", 'generic', $post_link);
+        }
     }
+
     return $post_link;
 }
 
