@@ -62,6 +62,14 @@ function philosophy_assets(){
 }
 add_action("wp_enqueue_scripts", "philosophy_assets");
 
+
+// Admin eneueue scripts
+function admin_override_styles() {
+    wp_register_style( 'custom_wp_admin_css_override', get_theme_file_uri('/assets/css/admin.css'), false, '1.0.0' );
+    wp_enqueue_style( 'custom_wp_admin_css_override' );
+}
+add_action( 'admin_enqueue_scripts', 'admin_override_styles' );
+
 // plugable function
 if(!function_exists("philosophy_pagination")){
     function philosophy_pagination(){

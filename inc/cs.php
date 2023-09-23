@@ -1,15 +1,38 @@
 <?php
-define('CS_ACTIVE_FRAMEWORK', false);
+define('CS_ACTIVE_FRAMEWORK', true);//default value
 define('CS_ACTIVE_METABOX', true);
-define('CS_ACTIVE_TAXONOMY', false);//default value
-define('CS_ACTIVE_SHORTCODE', false);//default value
+define('CS_ACTIVE_TAXONOMY', true);//default value
+define('CS_ACTIVE_SHORTCODE', true);
 define('CS_ACTIVE_CUSTOMIZE', false);//default value
 
 
 function philosophy_csf_metabox(){
+    CSFramework_Taxonomy::instance(array());
     CSFramework_Metabox::instance(array());
+    CSFramework_Shortcode_Manager::instance(array());
 }
 add_action('init', 'philosophy_csf_metabox');
+
+function philosophy_language_featured_image($options){
+    $options[]    = array(
+        'id'        => 'language_featured_image',
+        'taxonomy' => 'language', // or array( 'category', 'post_tag' )
+      
+        // begin: fields
+        'fields'    => array(
+          // begin: a field
+          array(
+            'id'    => 'featured_image',
+            'type'  => 'image',
+            'title' => 'Featured Image',
+          ),
+        ), // end: fields
+      );
+    
+    return $options;
+}
+
+add_filter('cs_taxonomy_options', 'philosophy_language_featured_image');
 
 function philosophy_page_metabox($options){
     
@@ -247,52 +270,182 @@ function philosophy_custom_post_types($options){
         )
     );
 
-    // $page_meta_info = get_
+    $page_meta_info = get_post_meta($page_id, 'page-custom_post_type', true);
 
+    if(isset($page_meta_info['cpt_type']) && $page_meta_info['cpt_type'] == 'book'){
+        $options[] = array(
+            'id' => 'page-custom_post_type_book',
+            'title' => __('Options for book', 'philosophy'),
+            'post_type' => 'page',
+            'context' => 'normal',
+            'priority' => 'default',
+            'sections' => array(
+                array(
+                    'name' => 'page-section1',
+                    // 'title' => __('Post Types', 'philosophy'),
+                    'icon' => 'fa fa-image',
+                    'fields' => array(
+                        array(
+                            'id'    => 'option_book_text',
+                            'type'  => 'text',
+                            'title' => __('Some book info', 'philosophy')
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+   
+    if(isset($page_meta_info['cpt_type']) && $page_meta_info['cpt_type'] == 'chapter'){
+        $options[] = array(
+            'id' => 'page-custom_post_type_chapter',
+            'title' => __('Options for chapter', 'philosophy'),
+            'post_type' => 'page',
+            'context' => 'normal',
+            'priority' => 'default',
+            'sections' => array(
+                array(
+                    'name' => 'page-section1',
+                    // 'title' => __('Post Types', 'philosophy'),
+                    'icon' => 'fa fa-image',
+                    'fields' => array(
+                        array(
+                            'id'    => 'option_chapter_text',
+                            'type'  => 'text',
+                            'title' => __('Some chapter info', 'philosophy')
+                        )
+                    )
+                )
+            )
+        );
+    }
+    
+
+    return $options;
+}
+add_filter('cs_metabox_options', 'philosophy_custom_post_types');
+
+function philosophy_cs_google_map($options){
     $options[] = array(
-        'id' => 'page-custom_post_type_book',
-        'title' => __('Options for book', 'philosophy'),
-        'post_type' => 'page',
-        'context' => 'normal',
-        'priority' => 'default',
-        'sections' => array(
+        'name' => 'group_1',
+        'title' => 'Group #1',
+        'shortcodes' => array(
             array(
-                'name' => 'page-section1',
-                // 'title' => __('Post Types', 'philosophy'),
-                'icon' => 'fa fa-image',
+                'name' => 'gmap',
+                'title' => 'Google Map',
                 'fields' => array(
                     array(
-                        'id'    => 'option_book_text',
-                        'type'  => 'text',
-                        'title' => __('Some book info', 'philosophy')
+                        'id' => 'place',
+                        'type' => 'text',
+                        'title' => __('Place', 'philosophy'),
+                        'help' => __('Enter Place', 'philosophy'),
+                        'default' => 'Notre Dame College, Dhaka'
+                    ),
+                    array(
+                        'id' => 'width',
+                        'type' => 'text',
+                        'title' => 'Width',
+                        'default' => '100%'
+                    ),
+                    array(
+                        'id' => 'height',
+                        'type' => 'text',
+                        'title' => 'Height',
+                        'default' => 500
+                    ),
+                    array(
+                        'id' => 'zoom',
+                        'type' => 'text',
+                        'title' => 'Zoom',
+                        'default' => 14
                     )
                 )
             )
         )
     );
+    return $options;
+}
+add_filter('cs_shortcode_options', 'philosophy_cs_google_map');
+
+function philosophy_theme_option_init(){
+    $settings = array(
+        'menu_title' => __('Philosophy Options', 'philosohpy'),
+        'menu_type' => 'menu',
+        'menu_slug' => 'philosophy_option_panel',
+        'framework_title' =>  __('Philosophy Options', 'philosohpy'),
+        'menu_icon' => 'dashicons-dashboard',
+        'menu_position' => 20,
+        'ajax_save' => false,
+        'show_reset_all' => true
+    );
+
+    CSFramework::instance($settings, array());
+}
+add_action('init', 'philosophy_theme_option_init');
+
+function philosophy_theme_options($options){
 
     $options[] = array(
-        'id' => 'page-custom_post_type_chapter',
-        'title' => __('Options for chapter', 'philosophy'),
-        'post_type' => 'page',
-        'context' => 'normal',
-        'priority' => 'default',
-        'sections' => array(
+        'name' => 'footer_options',
+        'title' => __('Footer Options', 'philosophy'),
+        'icon' => 'fa fa-edit',
+        'fields' => array(
             array(
-                'name' => 'page-section1',
-                // 'title' => __('Post Types', 'philosophy'),
-                'icon' => 'fa fa-image',
-                'fields' => array(
-                    array(
-                        'id'    => 'option_chapter_text',
-                        'type'  => 'text',
-                        'title' => __('Some chapter info', 'philosophy')
-                    )
-                )
+                'id' => 'footer_tag',
+                'type' => 'switcher',
+                'title' => __('Tags Area Visible?', 'philosophy'),
+                'default' => 0
+            ),
+            array(
+                'id' => 'social_facebook',
+                'type' => 'text',
+                'title' => __('Facebook URL', 'philosophy'),
+            ),
+            array(
+                'id' => 'social_twitter',
+                'type' => 'text',
+                'title' => __('Twitter URL', 'philosophy'),
+            ),
+            array(
+                'id' => 'social_pinterest',
+                'type' => 'text',
+                'title' => __('Pinterest URL', 'philosophy'),
+            )
+        )
+    );
+
+    $options[] = array(
+        'name' => 'section_1',
+        'title' => __('Section 1', 'philosophy'),
+        'icon' => 'fa fa-wifi',
+        'fields' => array(
+            array(
+                'id' => 'text_option',
+                'type' => 'text',
+                'title' => __('A Text Option', 'philosophy')
+            ),
+            array(
+                'id' => 'textarea_option',
+                'type' => 'textarea',
+                'title' => __('A Textarea Option', 'philosophy')
+            )
+        )
+    );
+
+    $options[] = array(
+        'name' => 'section_2',
+        'title' => __('Section 2', 'philosophy'),
+        'icon' => 'fa fa-heart',
+        'fields' => array(
+            array(
+                'id' => 'text_option',
+                'type' => 'text',
+                'title' => __('A Text Option', 'philosophy')
             )
         )
     );
 
     return $options;
 }
-add_filter('cs_metabox_options', 'philosophy_custom_post_types');
+add_filter('cs_framework_options', 'philosophy_theme_options');

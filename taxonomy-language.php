@@ -3,9 +3,23 @@
 
     <!-- s-content
     ================================================== -->
-    <section class="s-content">
-        <h2 class="text-center"><?php _e("Languages: ", "philosophy").single_term_title(); ?></h2>
-        
+    <section class="s-content">        
+        <h2 class="text-center">
+            <?php _e("Languages: ", "philosophy").single_term_title(); ?>
+        </h2>
+        <div class="text-center" style="padding-bottom:40px">
+            <?php
+            $term = get_queried_object();
+            $term_meta = get_term_meta($term->term_id, 'language_featured_image', true);
+            if(isset($term_meta['featured_image']) && $term_meta['featured_image'] > 0){
+                // echo wp_get_attachment_image($term_meta['featured_image'], 'medium');
+                $langluage_image = wp_get_attachment_image_url( $term_meta['featured_image'], 'medium' );
+                ?>
+                <img src="<?php echo esc_attr($langluage_image);?>" width="50" alt="<?php echo $term->name;?>">
+                <?php                
+            }
+            ?>
+        </div>
         <div class="row masonry-wrap">
             <div class="masonry">
 

@@ -134,6 +134,12 @@
                         </form>
                     </div>
 
+                    <?php
+                    $philosophy_social_facebook = esc_url(cs_get_option('social_facebook'));
+                    if($philosophy_social_facebook){
+                        echo "<a href='$philosophy_social_facebook' target='_blank'><i class='fa fa-facebook'></i></a>";
+                    }
+                    ?>
                 </div> <!-- end s-footer__subscribe -->
 
             </div>
