@@ -371,7 +371,8 @@ add_filter('cs_shortcode_options', 'philosophy_cs_google_map');
 function philosophy_theme_option_init(){
     $settings = array(
         'menu_title' => __('Philosophy Options', 'philosohpy'),
-        'menu_type' => 'menu',
+        'menu_type' => 'submenu',
+        'menu_parent' => 'themes.php',
         'menu_slug' => 'philosophy_option_panel',
         'framework_title' =>  __('Philosophy Options', 'philosohpy'),
         'menu_icon' => 'dashicons-dashboard',
