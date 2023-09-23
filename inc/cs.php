@@ -381,12 +381,15 @@ function philosophy_theme_option_init(){
         'show_reset_all' => true
     );
 
-    CSFramework::instance($settings, array());
+    $options = philosophy_theme_options();
+
+    new CSFramework($settings, $options);
 }
 add_action('init', 'philosophy_theme_option_init');
 
-function philosophy_theme_options($options){
+function philosophy_theme_options(){
 
+    $options =  array();
     $options[] = array(
         'name' => 'footer_options',
         'title' => __('Footer Options', 'philosophy'),
@@ -449,4 +452,4 @@ function philosophy_theme_options($options){
 
     return $options;
 }
-add_filter('cs_framework_options', 'philosophy_theme_options');
+// add_filter('cs_framework_options', 'philosophy_theme_options');
