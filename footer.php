@@ -44,6 +44,10 @@
 
         </div> <!-- end row -->
 
+        <?php
+        $phislophy_display_tags = cs_get_option('footer_tag');
+        if($phislophy_display_tags):
+        ?>
         <div class="row bottom tags-wrap">
             <div class="col-full tags">
                 <?php
@@ -63,7 +67,7 @@
                 </div> <!-- end tagcloud -->
             </div> <!-- end tags -->
         </div> <!-- end tags-wrap -->
-
+        <?php endif;?>
     </section> <!-- end s-extra -->
 
 
@@ -136,8 +140,16 @@
 
                     <?php
                     $philosophy_social_facebook = esc_url(cs_get_option('social_facebook'));
+                    $philosophy_social_twitter = esc_url(cs_get_option('social_twitter'));
+                    $philosophy_social_pinterest = esc_url(cs_get_option('social_pinterest'));
                     if($philosophy_social_facebook){
-                        echo "<a href='$philosophy_social_facebook' target='_blank'><i class='fa fa-facebook'></i></a>";
+                        echo "<a href='$philosophy_social_facebook' target='_blank'><i class='fa fa-facebook fa-2x'></i></a>";
+                    }
+                    if($philosophy_social_twitter){
+                        echo "<a href='$philosophy_social_twitter' target='_blank'><i class='fa fa-twitter fa-2x'></i></a>";
+                    }
+                    if($philosophy_social_pinterest){
+                        echo "<a href='$philosophy_social_pinterest' target='_blank'><i class='fa fa-pinterest fa-2x'></i></a>";
                     }
                     ?>
                 </div> <!-- end s-footer__subscribe -->
