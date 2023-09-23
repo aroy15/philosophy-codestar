@@ -74,8 +74,28 @@ function philosophy_page_metabox($options){
                     array(
                         'id' => 'page-teaser',
                         'type' => 'textarea',
-                        'default' => __('Teaser Text', 'philosophy'),
-                        'title' => __('Teaser Text', 'philosophy')
+                        'title' => __('Teaser Text', 'philosophy'),
+                        'default' => __('Teaser Text', 'philosophy')
+                    ),
+                    array(
+                        'id' => 'custom_color',
+                        'type' => 'color_picker',
+                        'title' => __('Color Picker Field', 'philosophy'),
+                        'default' => '#ff0000',
+                    ),
+                    array(
+                        'id' => 'google_fonts',
+                        'type' => 'typography',
+                        'title' => __('Typography Field', 'philosophy'),
+                        'default' => array(
+                            'family' => 'Open Sans',
+                            'variant' => '800',
+                            'font' => 'google' // this is helper for output
+                        ),
+                    ),
+                    array(
+                        'type' => 'subheading',
+                        'content' => __('Book Section', 'philosophy')
                     ),
                     array(
                         'id' => 'is-favorite',
