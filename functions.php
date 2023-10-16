@@ -59,6 +59,13 @@ function philosophy_assets(){
         wp_enqueue_script( "comment-reply" );
     }
     wp_enqueue_script("main-js", get_theme_file_uri("/assets/js/main.js"), array("jquery"), VERSION, true);
+
+    if(is_page_template('ajax.php')){
+        wp_enqueue_script('ajaxtest-js', get_theme_file_uri('/assets/js/ajaxtest.js'), array('jquery'), time(), true);
+        $ajaxurl = admin_url('admin-ajax.php');
+
+        wp_localize_script('ajaxtest-js', 'urls', array('ajaxurl' => $ajaxurl));
+    }
 }
 add_action("wp_enqueue_scripts", "philosophy_assets");
 
@@ -366,3 +373,29 @@ function philosophy_google_map($attributes){
     return $map;
 }
 add_shortcode('gmap', 'philosophy_google_map');
+
+function philosophy_ajaxtest(){
+    // check_admin_referer( $action:integer|string, $query_arg:string )// check for admin
+    if(check_ajax_referer(action:'ajaxtest', query_arg:'s')){
+        $info = $_POST['info'];
+        echo strtoupper($info);
+        die();
+
+    }
+}
+add_action('wp_ajax_ajaxtest', 'philosophy_ajaxtest');
+add_action('wp_ajax_nopriv_ajaxtest', 'philosophy_ajaxtest');// Not logged in user
+
+
+// only for not logged in users
+// function philosophy_ajaxtest_nopriv(){
+//     $info = $_POST['info'];
+//     echo strtoupper("Global ".$info);
+//     die();
+// }
+// add_action('wp_ajax_nopriv_ajaxtest', 'philosophy_ajaxtest_nopriv');
+
+function philosophy_nonce_life(){
+    return 20; // to make nonce life for 20 seconds
+}
+add_filter('nonce_life', 'philosophy_nonce_life');
